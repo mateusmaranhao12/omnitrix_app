@@ -52,78 +52,12 @@
 
             <!-- início listagem dinâmica -->
 
-              <div class="cartao-alien">
-                <h1>1. Cromático</h1>
-                <div class="cartao-alien-img">
-                    <img :src="require(`@/assets/imgs/aliens/cromatico.png`)">
-                </div>
+            <div v-for="alien in aliens" :key="alien.id" :value="alien.id" class="cartao-alien">
+              <h1>{{ alien.id }}. {{ alien.nome }}</h1>
+              <div class="cartao-alien-img">
+                <img :src="require(`@/assets/imgs/aliens/${alien.imagem}`)">
               </div>
-              <div class="cartao-alien">
-                <h1>2. Friagem</h1>
-                <div class="cartao-alien-img">
-                    <img :src="require(`@/assets/imgs/aliens/friagem.png`)">
-                </div>
-              </div>
-              <div class="cartao-alien">
-                <h1>3. Gosma</h1>
-                <div class="cartao-alien-img">
-                    <img :src="require(`@/assets/imgs/aliens/gosma.png`)">
-                </div>
-              </div>
-              <div class="cartao-alien">
-                <h1>4. Artrópode</h1>
-                <div class="cartao-alien-img">
-                    <img :src="require(`@/assets/imgs/aliens/artropode.png`)">
-                </div>
-              </div>
-              <div class="cartao-alien">
-                <h1>5. Enormossauro</h1>
-                <div class="cartao-alien-img">
-                    <img :src="require(`@/assets/imgs/aliens/enormossauro.png`)">
-                </div>
-              </div>
-              <div class="cartao-alien">
-                <h1>6. Fogo Fátuo</h1>
-                <div class="cartao-alien-img">
-                    <img :src="require(`@/assets/imgs/aliens/fogo-fatuo.png`)">
-                </div>
-              </div>
-              <div class="cartao-alien">
-                <h1>7. Eco Eco</h1>
-                <div class="cartao-alien-img">
-                    <img :src="require(`@/assets/imgs/aliens/eco-eco.png`)">
-                </div>
-              </div>
-              <div class="cartao-alien">
-                <h1>8. Arraia a Jato</h1>
-                <div class="cartao-alien-img">
-                    <img :src="require(`@/assets/imgs/aliens/arraia-a-jato.png`)">
-                </div>
-              </div>
-              <div class="cartao-alien">
-                <h1>9. Macaco Aranha</h1>
-                <div class="cartao-alien-img">
-                    <img :src="require(`@/assets/imgs/aliens/macaco-aranha.png`)">
-                </div>
-              </div>
-              <div class="cartao-alien">
-                <h1>10. Alien X</h1>
-                <div class="cartao-alien-img">
-                    <img :src="require(`@/assets/imgs/aliens/alien-x.png`)">
-                </div>
-              </div>
-              <div class="cartao-alien">
-                <h1>11. Bala de Canhão</h1>
-                <div class="cartao-alien-img">
-                    <img :src="require(`@/assets/imgs/aliens/bala-de-canhao.png`)">
-                </div>
-              </div>
-              <div class="cartao-alien">
-                <h1>12. Estrela Polar</h1>
-                <div class="cartao-alien-img">
-                    <img :src="require(`@/assets/imgs/aliens/estrela-polar.png`)">
-                </div>
-              </div>
+            </div>
 
             <!-- fim listagem dinâmica -->
 
@@ -137,6 +71,7 @@
 
 <script>
 
+import axios from 'axios'
 export default {
   name: 'Home',
   components: {
@@ -145,11 +80,32 @@ export default {
 
   data() {
     return {
-      exibir_lista: false
+      exibir_lista: false,
+      aliens: [],
+      lista_aliens: {
+        nome: '',
+        imagem: ''
+      }
     }
   },
 
+  created() {
+    this.getAliens()
+  },
+
   methods: {
+    getAliens() {
+      axios.get('http://localhost/Projetos/app_omnitrix/src/backend/aliens.php')
+        .then((res) => {
+          if (res.data.error) {
+            this.mensagem_erro = res.data.mensagem
+          }
+          else {
+            this.aliens = res.data.aliens
+          }
+        })
+    },
+
     mostrarLista() {
       this.exibir_lista = true
     },
