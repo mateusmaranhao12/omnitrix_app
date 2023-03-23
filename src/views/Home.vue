@@ -8,7 +8,12 @@
           <div class="card-body bg-alien bg-normal">
             <div class="alien">
               <img v-if="!exibir_lista" @click="mostrarLista()" class="omnitrix-img" src="../assets/imgs/omnitrix.png">
-              <img v-if="exibir_lista" @click="mostrarLista()" src="../assets/imgs/aliens/fogo-fatuo.png">
+              <transition 
+                enter-active-class="animate__animated animate__fadeInRight"
+                leave-active-class="animate__animated animate__fadeOutLeft"
+              >
+                <img v-if="exibir_alien" @click="mostrarLista()" :src="require(`@/assets/imgs/aliens/${lista_aliens.imagem}`)">
+              </transition>
             </div>
           </div>
 
@@ -53,7 +58,7 @@
 
             <!-- início listagem dinâmica -->
 
-            <div v-for="alien in aliens" :key="alien.id" :value="alien.id" class="cartao-alien">
+            <div v-for="alien in aliens" @click="mostrarAlien(alien)" :key="alien.id" :value="alien.id" class="cartao-alien">
               <h1>{{ alien.id }}. {{ alien.nome }}</h1>
               <div class="cartao-alien-img">
                 <img :src="require(`@/assets/imgs/aliens/${alien.imagem}`)">
@@ -82,6 +87,7 @@ export default {
   data() {
     return {
       exibir_lista: false,
+      exibir_alien: false,
       aliens: [],
       lista_aliens: {
         nome: '',
@@ -109,6 +115,18 @@ export default {
 
     mostrarLista() {
       this.exibir_lista = !this.exibir_lista
+    },
+
+    mostrarAlien(alien) {
+      //se o alien exibido na tela é diferente do alien clicado
+      //se o atributo exibir_alien for true
+      if ((this.lista_aliens.id != alien.id) && this.exibir_alien) {
+        setTimeout(() => {
+          this.mostrarAlien(alien)
+        }, 500)
+      }
+      this.lista_aliens = alien
+      this.exibir_alien = !this.exibir_alien
     }
   }
 }
