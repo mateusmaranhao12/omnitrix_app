@@ -8,6 +8,7 @@
           <div class="card-body bg-alien bg-normal">
             <div class="alien">
               <img v-if="!exibir_lista" @click="mostrarLista()" class="omnitrix-img" src="../assets/imgs/omnitrix.png">
+              <img v-if="exibir_lista" @click="mostrarLista()" src="../assets/imgs/aliens/fogo-fatuo.png">
             </div>
           </div>
 
@@ -26,7 +27,7 @@
             <h1>Lista de Aliens</h1>
           </div>
           <div class="col-md-6">
-            <button @click="ocultarLista()" class="btn btn-secondary mt-2 mb-2">Fechar lista</button>
+            <button @click="mostrarLista()" class="btn btn-secondary mt-2 mb-2">Fechar lista</button>
           </div>
         </div>
 
@@ -107,11 +108,7 @@ export default {
     },
 
     mostrarLista() {
-      this.exibir_lista = true
-    },
-
-    ocultarLista() {
-      this.exibir_lista = false
+      this.exibir_lista = !this.exibir_lista
     }
   }
 }
