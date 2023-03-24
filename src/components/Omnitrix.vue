@@ -38,7 +38,9 @@
                     <h1>Lista de Aliens</h1>
                 </div>
                 <div class="col-md-6">
-                    <button @click="mostrarLista()" class="btn btn-secondary mt-2 mb-2">Fechar lista</button>
+                    <button @click="mostrarLista()" class="btn btn-secondary mt-2 mb-2" :disabled="transformar">
+                        Fechar lista
+                    </button>
                 </div>
             </div>
 
